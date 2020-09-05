@@ -28,11 +28,15 @@ const Home = () => {
     fetchApi();
   }, []);
 
-  const renderMoviesSlider = nowPlaying.slice(0, 5).map((item, index) => {
+  const renderMoviesSlider = nowPlaying.slice(0, 5).map((movie, i) => {
     return (
-      <div style={{ height: 500, width: "100%" }} key={index}>
+      <div style={{ height: 500, width: "100%" }} key={i}>
         <div className="carousel-center">
-          <img style={{ height: 600 }} src={item.backPoster} alt={item.title} />
+          <img
+            style={{ height: 600 }}
+            src={movie.backPoster}
+            alt={movie.title}
+          />
         </div>
         <div className="carousel-center">
           <i
@@ -44,7 +48,7 @@ const Home = () => {
           className="carousel-caption"
           style={{ textAlign: "center", fontSize: 35 }}
         >
-          {item.title}
+          {movie.title}
         </div>
       </div>
     );
@@ -61,13 +65,14 @@ const Home = () => {
 
   const renderMoviesByGenre = moviesByGenre.slice(0, 4).map((movie) => {
     return (
-      <div className="col-md-3 col-sm-6">
+      <div className="col-md-3 col-sm-6" key={movie.id}>
         <div className="card">
           <Link to={`/movie/${movie.id}`}>
             <img src={movie.poster} alt={movie.title} className="img-fluid" />
           </Link>
         </div>
         <div className="mt-3">
+          <p>{movie.title}</p>
           <p>Rated: {movie.rating}</p>
           <ReactStars
             count={movie.rating}
@@ -75,6 +80,25 @@ const Home = () => {
             color="#f4c10f"
           ></ReactStars>
         </div>
+      </div>
+    );
+  });
+
+  const renderTrendingPersons = persons.slice(0, 4).map((person, i) => {
+    return (
+      <div className="col-md-3 text-center" key={i}>
+        <img
+          src={person.profileImg}
+          alt={person.name}
+          className="img-fluid rounded-circle mx-auto d-block"
+        />
+        <p className="font-weight-bold text-center">{person.name}</p>
+        <p
+          className="font-weight-light text-center"
+          style={{ color: "#5a606b" }}
+        >
+          Trending for {person.known}
+        </p>
       </div>
     );
   });
@@ -102,8 +126,18 @@ const Home = () => {
         <div className="row mt-3">{renderMoviesByGenre}</div>
 
         <div className="row mt-3">
-          <p>TRENDING PERSON ON THIS WEEK</p>
+          <p className="font-weight-bold" style={{ color: "#5a606b" }}>
+            TRENDING PERSON ON THIS WEEK
+          </p>
         </div>
+        <div className="row mt-3">
+          <div className="col">
+            <div className="float-right">
+              <i className="far fa-arrow-alt-circle-right"></i>
+            </div>
+          </div>
+        </div>
+        <div className="row mt-3">{renderTrendingPersons}</div>
       </div>
     </div>
   );

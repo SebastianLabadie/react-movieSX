@@ -78,7 +78,6 @@ export const getMoviesByGenre=async(genre_id)=>{
             rating:movie['vote_average'],
            }
        })
-       console.log(moviesByGenre)
        return moviesByGenre
      } catch (error) {
          console.log(error)
@@ -86,7 +85,26 @@ export const getMoviesByGenre=async(genre_id)=>{
 }
 
 export const getPersons=async()=>{
-    
+    try {
+        const res = await axios.get(personUrl,{
+            params:{
+                api_key:apiKey
+            }
+        })
+        const data=res.data
+        const persons=data.results.map(person=> {
+            return {
+                id:person['id'],
+                profileImg:'https://image.tmdb.org/t/p/w200' + person['profile_path'],
+                popularity:person['popularity'],
+                name:person['name'],
+                known:person['known_for_department']
+            }
+        })
+        return persons
+     } catch (error) {
+         console.log(error)
+     }
 }
 
 export const getMoviesTopRated=async()=>{
