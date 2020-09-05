@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.list-inline-item .btn{
+  color:#5a606b;
+  border:1px solid #5a606b;
+  border-radius: 25px;
+  margin-bottom: 10px;
+  font-weight: 500;
+
+}
+.list-inline-item .btn-outline-info:hover {
+  color: #ffffff;
+  border-color: #ffffff;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
