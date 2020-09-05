@@ -4,7 +4,7 @@ const apiKey='d8792ad8e2f663b6c2aad88e135c8e81'
 const url='https://api.themoviedb.org/3'
 const nowPlayingUrl=`${url}/movie/now_playing`
 const topRatedUrl=`${url}/movie/top_rated`
-const movieUrl=`${url}/`
+const movieUrl=`${url}/movie`
 const genreUrl=`${url}/genre/movie/list`
 const moviesUrl=`${url}/discover/movie`
 const personUrl=`${url}/trending/person/week`
@@ -55,8 +55,34 @@ export const getGenres=async()=>{
         console.log(error)
     }
 }
-export const getMoviesByGenre=async()=>{
-    
+export const getMoviesByGenre=async(genre_id)=>{
+    try {
+        const res = await axios.get(moviesUrl,{
+            params:{
+                api_key:apiKey,
+                language:'en_US',
+                page:1,
+                with_genres:genre_id
+            }
+        })
+        const data=res.data
+        const imagesUrl='https://image.tmdb.org/t/p/original/'
+       const moviesByGenre=data.results.map((movie)=>{
+           return {
+            id:movie['id'],
+            backPoster:imagesUrl + movie['backdrop_path'],
+            popularity:movie['popularity'],
+            title:movie['title'],
+            poster:imagesUrl + movie['poster_path'],
+            overview:movie['overview'],
+            rating:movie['vote_average'],
+           }
+       })
+       console.log(moviesByGenre)
+       return moviesByGenre
+     } catch (error) {
+         console.log(error)
+     }
 }
 
 export const getPersons=async()=>{

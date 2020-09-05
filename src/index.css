@@ -26,3 +26,14 @@ code {
   background-color: transparent;
   transition: all 0.3s ease-in-out;
 }
+
+.fa-arrow-alt-circle-right {
+  color: #f4c10f;
+  font-size: 40px;
+  font-weight: bolder;
+  cursor: pointer;
+}
+.fa-arrow-alt-circle-right:hover {
+  color: #ffffff;
+  transition: all 0.3s ease-in-out;
+}
