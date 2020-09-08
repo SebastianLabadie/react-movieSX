@@ -28,6 +28,13 @@ const Home = () => {
     fetchApi();
   }, []);
 
+
+const handleClickGenre=async (genreId)=>{
+  setMoviesByGenre(await getMoviesByGenre(genreId))
+}
+
+  
+
   const renderMoviesSlider = nowPlaying.slice(0, 5).map((movie, i) => {
     return (
       <div style={{ height: 500, width: "100%" }} key={i}>
@@ -41,7 +48,7 @@ const Home = () => {
         <div className="carousel-center">
           <i
             className="far fa-play-circle"
-            style={{ fontSize: 95, color: "#f4c10f" }}
+            style={{ fontSize: 95, color: "#f4c10f",cursor:"pointer"}}
           ></i>
         </div>
         <div
@@ -56,7 +63,7 @@ const Home = () => {
   const renderGenres = genres.map((genre, i) => {
     return (
       <li className="list-inline-item " key={i}>
-        <button type="button" className="btn btn-outline-info">
+        <button type="button" className="btn btn-outline-info" onClick={()=>handleClickGenre(genre.id)}>
           {genre.name}
         </button>
       </li>
@@ -102,6 +109,28 @@ const Home = () => {
       </div>
     );
   });
+
+  const renderMoviesTopRated = topRated.slice(0, 4).map((movie) => {
+    return (
+      <div className="col-md-3" key={movie.id}>
+        <div className="card">
+          <Link to={`/movie/${movie.id}`}>
+            <img src={movie.poster} alt={movie.title} className="img-fluid" />
+          </Link>
+        </div>
+        <div className="mt-3">
+          <p>{movie.title}</p>
+          <p>Rated: {movie.rating}</p>
+          <ReactStars
+            count={movie.rating}
+            size={25}
+            color="#f4c10f"
+          ></ReactStars>
+        </div>
+      </div>
+    );
+  });
+
   return (
     <div>
       <div className="container">
@@ -123,6 +152,13 @@ const Home = () => {
             <div className="list-inline">{renderGenres}</div>
           </div>
         </div>
+        <div className="row mt-3">
+          <div className="col">
+            <div className="float-right">
+              <i className="far fa-arrow-alt-circle-right"></i>
+            </div>
+          </div>
+        </div>
         <div className="row mt-3">{renderMoviesByGenre}</div>
 
         <div className="row mt-3">
@@ -138,6 +174,21 @@ const Home = () => {
           </div>
         </div>
         <div className="row mt-3">{renderTrendingPersons}</div>
+        <div className="row mt-3">
+          <div className="col">
+            <p className="font-weight-bold" style={{ color: "#5a606b" }}>
+              TOP RATED MOVIES
+            </p>
+          </div>
+        </div>
+        <div className="row mt-3">
+          <div className="col">
+            <div className="float-right">
+              <i className="far fa-arrow-alt-circle-right"></i>
+            </div>
+          </div>
+        </div>
+        <div className="row mt-3">{renderMoviesTopRated}</div>
       </div>
     </div>
   );

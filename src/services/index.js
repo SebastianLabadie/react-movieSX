@@ -108,11 +108,58 @@ export const getPersons=async()=>{
 }
 
 export const getMoviesTopRated=async()=>{
-    
+    try {
+        const res = await axios.get(topRatedUrl,{
+            params:{
+                api_key:apiKey,
+                language:'en_US',
+                page:1,
+            }
+        })
+        const data=res.data
+        const imagesUrl='https://image.tmdb.org/t/p/original/'
+       const moviesTopRated=data.results.map((movie)=>{
+           return {
+            id:movie['id'],
+            backPoster:imagesUrl + movie['backdrop_path'],
+            popularity:movie['popularity'],
+            title:movie['title'],
+            poster:imagesUrl + movie['poster_path'],
+            overview:movie['overview'],
+            rating:movie['vote_average'],
+           }
+       })
+       return moviesTopRated
+     } catch (error) {
+         console.log(error)
+     }
 }
 
-export const getMovieDetail=async()=>{
-    
+export const getMovieDetail=async(id)=>{
+    console.log(id+ 'dddddddddddd')
+    try {
+        const res = await axios.get(`${movieUrl}/${id}`,{
+            params:{
+                api_key:apiKey,
+                language:'en_US',
+            }
+        })
+        const data=res.data
+        const imagesUrl='https://image.tmdb.org/t/p/original/'
+       const movie={
+            id:data.id,
+            backPoster:imagesUrl + data['backdrop_path'],
+            popularity:data['popularity'],
+            title:data['title'],
+            poster:imagesUrl + data['poster_path'],
+            overview:data['overview'],
+            rating:data['vote_average'],
+           }
+       
+       return movie
+     } catch (error) {
+         console.log(error)
+     }
 }
 
 export const getMovieVideos=async()=>{
