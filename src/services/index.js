@@ -136,7 +136,6 @@ export const getMoviesTopRated=async()=>{
 }
 
 export const getMovieDetail=async(id)=>{
-    console.log(id+ 'dddddddddddd')
     try {
         const res = await axios.get(`${movieUrl}/${id}`,{
             params:{
@@ -154,6 +153,7 @@ export const getMovieDetail=async(id)=>{
             poster:imagesUrl + data['poster_path'],
             overview:data['overview'],
             rating:data['vote_average'],
+            genres:data.genres
            }
        
        return movie
@@ -162,13 +162,66 @@ export const getMovieDetail=async(id)=>{
      }
 }
 
-export const getMovieVideos=async()=>{
-    
+export const getMovieVideos=async(id)=>{
+    try {
+        const res = await axios.get(`${movieUrl}/${id}/videos`,{
+            params:{
+                api_key:apiKey,
+                language:'en_US',
+            }
+        })
+        return res.data.results[0]
+     } catch (error) {
+         console.log(error)
+     }
 }
 
-export const getCasts=async()=>{
-    
+export const getCasts=async(id)=>{
+    try {
+        const res = await axios.get(`${movieUrl}/${id}/casts`,{
+            params:{
+                api_key:apiKey,
+                language:'en_US',
+            }
+        })
+        const imagesUrl='https://image.tmdb.org/t/p/w200'
+        const casts=res.data.cast.map(cast=>{
+           return { id:cast.cast_id,
+                    character:cast.character,
+                    name:cast.name,
+                    img:imagesUrl+cast.profile_path,    
+            }
+        })
+        return casts
+     } catch (error) {
+         console.log(error)
+     }
 }
-export const getSimilarMovie=async()=>{
-    
+
+export const getSimilarMovies=async(id)=>{
+    try {
+        const res = await axios.get(`${movieUrl}/${id}/similar`,{
+            params:{
+                api_key:apiKey,
+                language:'en_US',
+                page:1
+            }
+        })
+        const data=res.data
+        const imagesUrl='https://image.tmdb.org/t/p/original/'
+           const movies=data.results.map((movie)=>{
+            return {
+             id:movie['id'],
+             backPoster:imagesUrl + movie['backdrop_path'],
+             popularity:movie['popularity'],
+             title:movie['title'],
+             poster:imagesUrl + movie['poster_path'],
+             overview:movie['overview'],
+             rating:movie['vote_average'],
+            }
+        })
+       return movies
+     } catch (error) {
+         console.log(error)
+     }
 }

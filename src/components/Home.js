@@ -83,7 +83,7 @@ const handleClickGenre=async (genreId)=>{
           <p>Rated: {movie.rating}</p>
           <ReactStars
             count={movie.rating}
-            size={25}
+            size={20}
             color="#f4c10f"
           ></ReactStars>
         </div>
